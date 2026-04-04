@@ -10,8 +10,8 @@
      (assert (string->number line) exact-integer?))))
 
 (module+ main
-  (define filename (command-line #:args (filename) filename))
-  (displayln (solve (open-input-file (cast filename String)))))
+  (define filename (cast (command-line #:args (filename) filename) String))
+  (displayln (solve (open-input-file filename))))
 
 (module+ test
   (require/typed lib/test-helper
