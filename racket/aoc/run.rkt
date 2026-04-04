@@ -1,12 +1,13 @@
 #lang racket
 
-(require racket/runtime-path file/glob)
+(require racket/runtime-path racket/contract file/glob)
 
 (define-runtime-path aoc-root-raw ".")
 (define aoc-root (normalize-path aoc-root-raw))
 
 ;; Discover solution entry points: files named <digit>.rkt inside day<NN>/ dirs
-(define (discover-solutions base-dir)
+(define/contract (discover-solutions base-dir)
+  (-> path? (listof path?))
   ;; Three patterns to handle: aoc/, year/, and day/ as base-dir
   (define deep-pattern (build-path base-dir "**" "day*" "*.rkt"))
   (define shallow-pattern (build-path base-dir "day*" "*.rkt"))
@@ -27,12 +28,14 @@
    candidates))
 
 ;; Discover input files matching input*.txt in a directory
-(define (discover-inputs dir)
+(define/contract (discover-inputs dir)
+  (-> path? (listof path?))
   (define pattern (build-path dir "input*.txt"))
   (glob (path->string pattern)))
 
-;; Run a solution file against an input file, return output string
-(define (run-solution solution-path input-path)
+;; Run a solution file against an input file, return output string and exit status
+(define/contract (run-solution solution-path input-path)
+  (-> path? path? (values string? exact-nonnegative-integer?))
   (define-values (proc stdout stdin stderr)
     (subprocess #f #f (current-error-port)
                 (find-executable-path "racket")
