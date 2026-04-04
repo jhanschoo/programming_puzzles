@@ -12,9 +12,10 @@
   (define shallow-pattern (build-path base-dir "day*" "*.rkt"))
   (define direct-pattern (build-path base-dir "*.rkt"))
   (define candidates
-    (append (glob (path->string deep-pattern))
-            (glob (path->string shallow-pattern))
-            (glob (path->string direct-pattern))))
+    (remove-duplicates
+     (append (glob (path->string deep-pattern))
+             (glob (path->string shallow-pattern))
+             (glob (path->string direct-pattern)))))
   (filter
    (lambda (p)
      (define-values (parent-dir name _must1) (split-path p))
@@ -33,7 +34,7 @@
 ;; Run a solution file against an input file, return output string
 (define (run-solution solution-path input-path)
   (define-values (proc stdout stdin stderr)
-    (subprocess #f #f #f
+    (subprocess #f #f (current-error-port)
                 (find-executable-path "racket")
                 (path->string solution-path)
                 (path->string input-path)))
@@ -42,7 +43,6 @@
   (close-input-port stdout)
   (subprocess-wait proc)
   (define status (subprocess-status proc))
-  (close-input-port stderr)
   (values (string-trim output) status))
 
 (module+ main
