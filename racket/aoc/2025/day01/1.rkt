@@ -15,8 +15,8 @@
 
 (module+ test
   (require/typed lib/test-helper
-    [run-diagnostic-tests (-> (-> Input-Port String) Path (Listof (List String String)) Void)])
+    [check-solve (-> (-> Input-Port String) Path (Listof (List String String)) Void)])
   (require racket/runtime-path)
   (define-runtime-path here ".")
-  (run-diagnostic-tests solve here
+  (check-solve solve here
     '(("diagnostic.txt" "15"))))
