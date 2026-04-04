@@ -1,6 +1,12 @@
 #lang racket
 
-(provide run-diagnostic-tests)
+(provide
+ (contract-out
+  [run-diagnostic-tests
+   (-> (-> input-port? string?)
+       path?
+       (listof (list/c string? string?))
+       void?)]))
 
 (require rackunit file/glob)
 
