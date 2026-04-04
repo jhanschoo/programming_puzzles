@@ -2,30 +2,25 @@
 
 (provide
  (contract-out
-  [run-diagnostic-tests
-   (-> (-> input-port? string?)
+  [check-solve
+   (-> solve/c
        path?
-       (listof (list/c string? string?))
+       (listof (list/c path-string? string?))
        void?)]))
 
-(require rackunit file/glob)
+(require rackunit lib/contracts)
 
-;; run-diagnostic-tests : (InputPort -> String) Path (Listof (List String String)) -> Void
+;; check-solve : (InputPort -> String) Path (Listof (List path-string? String)) -> Void
 ;;
-;; For each (glob-pattern expected) pair, expands the glob relative to dir,
-;; opens each matching file, calls solve, and asserts the result equals expected.
-(define (run-diagnostic-tests solve dir pairs)
+;; For each (filename expected) pair, opens the file at (build-path dir filename),
+;; calls solve, and asserts the result equals expected.
+(define (check-solve solve dir pairs)
   (for ([pair (in-list pairs)])
-    (define pattern (first pair))
+    (define filename (first pair))
     (define expected (second pair))
-    (define full-pattern (build-path dir pattern))
-    (define matches (glob (path->string full-pattern)))
-    (when (null? matches)
-      (fail (format "No files matched pattern: ~a" full-pattern)))
-    (for ([file-path (in-list matches)])
-      (define result
-        (call-with-input-file file-path
-          (lambda (in) (solve in))))
-      (with-check-info (['file (path->string file-path)]
-                        ['pattern pattern])
-        (check-equal? result expected)))))
+    (define file-path (build-path dir filename))
+    (define result
+      (call-with-input-file file-path
+        (lambda (in) (solve in))))
+    (with-check-info (['file (path->string file-path)])
+      (check-equal? result expected))))
