@@ -1,15 +1,29 @@
-from pathlib import Path
 from typing import TextIO
 
 
-def solve(in_: TextIO) -> str:
+def solve(f: TextIO) -> str:
     """
-    >>> solve(open(Path(__file__).parent / "diagnostic.txt"))
-    '6'
+    >>> from pathlib import Path
+    >>> with open(Path(__file__).parent / "diagnostic.txt") as f:
+    ...     solve(f)
+    '3'
     """
-    return str(sum(int(line) for line in in_))
+    pos = 50
+    zero_count = 0
+    for line in f:
+        direction, count = line[0], int(line[1:])
+        match direction:
+            case "L":
+                pos -= count
+            case "R":
+                pos += count
+        pos = pos % 100
+        if pos == 0:
+            zero_count += 1
+    return str(zero_count)
 
 
 if __name__ == "__main__":
     import sys
-    print(solve(open(sys.argv[1])))
+    with open(sys.argv[1]) as f:
+        print(solve(f))
