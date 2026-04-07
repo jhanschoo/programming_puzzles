@@ -1,2 +1,5 @@
 diagnostic*.txt filter=git-crypt diff=git-crypt
+example*.txt filter=git-crypt diff=git-crypt
 input*.txt filter=git-crypt diff=git-crypt
+noahs-*.jsonl filter=git-crypt diff=git-crypt
+noahs-*.zip filter=git-crypt diff=git-crypt
