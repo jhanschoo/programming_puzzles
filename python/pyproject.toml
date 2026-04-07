@@ -4,7 +4,10 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "jupyter>=1.1.1",
+    "pandas>=3.0.2",
+]
 
 [dependency-groups]
 dev = [
@@ -20,4 +23,4 @@ packages = ["aoc", "lib"]
 
 [tool.pytest.ini_options]
 addopts = "--doctest-modules"
-testpaths = ["aoc", "lib"]
+testpaths = ["aoc", "ec", "lib"]
