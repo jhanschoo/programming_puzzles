@@ -1,1 +1,1 @@
-# Advent of Code solutions
+# Programming Puzzle solutions
