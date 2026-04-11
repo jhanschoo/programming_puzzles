@@ -6,10 +6,10 @@ def solve_params(draft: str, reps: int, distance: int) -> int:
     >>> from pathlib import Path
     >>> with open(Path(__file__).parent / "example.txt") as f:
     ...     draft = f.read().strip()
-    >>> solve_params(draft, 2, 10)
-    72
     >>> solve_params(draft, 1, 10)
     34
+    >>> solve_params(draft, 2, 10)
+    72
     """
     people = Counter()
     rep_len = len(draft)
