@@ -1,10 +1,11 @@
 #lang racket
 
-(require ec/c)
+(require threading ec/c)
 (provide (contract-out [solve solve/c]))
 
 (define (solve in)
-  (match-define (list names-str instructions-str) (string-split (string-trim (port->string in))))
+  (match-define (list names-str instructions-str)
+    (~> in port->string string-trim string-split))
   (define names (string-split names-str ","))
   (define num-names (length names))
   (define instructions (string-split instructions-str ","))
