@@ -19,8 +19,6 @@ def solve(f: TextIO) -> str:
         if '/' in g:
             g = g.replace('\n', '')
             teeth = teeth / Fraction(g)
-    if '/' in last:
-        teeth = teeth * Fraction(last)
     turns = floor(Fraction(100) * Fraction(teeth) / Fraction(last))
 
     return f"{turns}"
