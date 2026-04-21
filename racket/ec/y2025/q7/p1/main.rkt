@@ -4,7 +4,7 @@
 (provide (contract-out [solve solve/c]))
 
 (define (solve in)
-  (define names (~> in read-line string-trim (string-split ",")))
+  (define names (~> in read-line (string-split ",")))
   (read-line in) ; skip blank line
   (define rules
     (for/hash

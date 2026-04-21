@@ -19,7 +19,7 @@
                     (for/list ([segment (second fishbone)]) (number->string (second segment))) "")))
 
 (define (line->fishbone line)
-  (match-define (list id numbers-str) (string-split (string-trim line) ":"))
+  (match-define (list id numbers-str) (string-split line ":"))
   (define numbers (map string->number (string-split numbers-str ",")))
   (define raw-fishbone (for/fold ([fb '()]) ([n numbers]) (add-to-raw-fishbone fb n)))
   (list (string->number id) raw-fishbone))

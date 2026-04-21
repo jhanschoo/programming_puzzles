@@ -19,7 +19,7 @@
   (for/list ([segment fishbone]) (number->string (second segment))) "")))
 
 (define (line->quality line)
-  (match-define (list _ numbers-str) (string-split (string-trim line) ":"))
+  (match-define (list _ numbers-str) (string-split line ":"))
   (define numbers (map string->number (string-split numbers-str ",")))
   (define fishbone (for/fold ([fb '()]) ([n numbers]) (add-to-fishbone fb n)))
   (quality fishbone))
