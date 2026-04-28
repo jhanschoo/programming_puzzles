@@ -35,13 +35,13 @@ def solve_params(grid: list[str]) -> int:
 
     for r in range(R):
         for c in range(C):
-            char = grid[r][c]
-            if char == "D":
-                dragon_pos = (r, c)
-            elif char == "S":
-                initial_sheep_rows[c] = r
-            elif char == "#":
-                hideouts.add((r, c))
+            match grid[r][c]:
+                case "D":
+                    dragon_pos = (r, c)
+                case "S":
+                    initial_sheep_rows[c] = r
+                case "#":
+                    hideouts.add((r, c))
 
     # Initial state: (dragon_pos, sheep_rows)
     # Turn: starts with sheep.
@@ -56,13 +56,15 @@ def solve_params(grid: list[str]) -> int:
             d_pos_is_hideout = d_pos in hideouts
             for c in range(C):
                 r = s_rows[c]
-                if r >= 0:  # Sheep exists on the board (r < R always true here)
+                if r >= 0:  # Sheep exists on the board
                     nr = r + 1
                     if nr == R:
                         turn_can_be_made = True
                     elif (nr, c) != d_pos or d_pos_is_hideout:
                         turn_can_be_made = True
-                        next_s_rows = tuple(nr if i == c else s_rows[i] for i in range(C))
+                        next_s_rows = tuple(
+                            nr if i == c else s_rows[i] for i in range(C)
+                        )
                         dragon_to_move[(d_pos, next_s_rows)] += mult
 
             if not turn_can_be_made:
